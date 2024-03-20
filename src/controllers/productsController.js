@@ -1,15 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
+const productService = require('../data/productService')
 const productsFilePath = path.join(__dirname, '../data/productsDataBase.json');
 const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
+const multer = require('../middlewares/multerMiddle');
+
 
 const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const controller = {
 	// Root - Show all products
 	index: (req, res) => {
-		res.render('../views/products.ejs')
+		res.render('index', {products: productService.getAll})
 	},
 
 	// Detail - Detail from one product
@@ -23,8 +26,9 @@ const controller = {
 	},
 	
 	// Create -  Method to store
-	store: (req, res) => {
-		// Do the magic
+		store: (req, res) => {
+			fs.appendFileSync(productsFilePath, JSON.stringify(req.body));
+			res.redirect('/products/');
 	},
 
 	// Update - Form to edit
