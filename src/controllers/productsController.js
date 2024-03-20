@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const productService = require('../data/productService')
+const uploadFile = require('../middlewares/multerMiddle');
 const productsFilePath = path.join(__dirname, '../data/productsDataBase.json');
 const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
-const multer = require('../middlewares/multerMiddle');
 
 
 const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -12,7 +12,7 @@ const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const controller = {
 	// Root - Show all products
 	index: (req, res) => {
-		res.render('index', {products: productService.getAll})
+		res.render('index', {products: productService.getAll()})
 	},
 
 	// Detail - Detail from one product
