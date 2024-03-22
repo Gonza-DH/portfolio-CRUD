@@ -9,8 +9,17 @@ const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 let productService = {
     getAll: function(){
-        return this.products;
+        return products
     },
+
+    getOneBy: function(id){
+        return this.products.find(product => product.id == id)
+    },
+
+    save: function(product){
+        this.products.push(product);
+        fs.writeFileSync(path.resolve(__dirname, '../data/productsDataBase.json'), JSON.stringify(this.products));
+    }
 
 
 }
